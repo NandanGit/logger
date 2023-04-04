@@ -1,5 +1,5 @@
-import { COLOR_MAP } from '../../Logger/Logger';
 import { $LogType, iLoggerOptions, iSymbolMap } from '../../Logger/types';
+import { COLOR_MAP } from '../../constants';
 
 const logToStream = (
 	stream: NodeJS.WriteStream,

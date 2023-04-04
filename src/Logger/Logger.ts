@@ -7,51 +7,44 @@ import {
 	iLoggerOutputs,
 	iLogger,
 	iFile,
+	$LogType,
+	$SubLogger,
 } from './types';
-
-export const COLOR_MAP = {
-	default: '\x1b[0m',
-	success: '\x1b[32m',
-	info: '\x1b[34m',
-	warning: '\x1b[33m',
-	error: '\x1b[31m',
-	debug: '\x1b[35m',
-};
 
 export const createLogger = (
 	output: $Loggable | iLoggerOutputs,
 	options: iLoggerOptions
 ): iLogger => {
 	const { symbols = {} } = options;
-	// console.log('createLogger called with:', output, options);
-	let defaultOutput: $Loggable;
-	let successOutput: $Loggable | undefined;
-	let infoOutput: $Loggable | undefined;
-	let warningOutput: $Loggable | undefined;
-	let errorOutput: $Loggable | undefined;
-	let debugOutput: $Loggable | undefined;
+	const outputs: iLoggerOutputs = {
+		default: undefined as any,
+		success: undefined,
+		info: undefined,
+		warning: undefined,
+		error: undefined,
+		debug: undefined,
+	};
 
-	if ((output as iLoggerOutputs).defaultOutput) {
-		defaultOutput = (output as iLoggerOutputs).defaultOutput;
-		successOutput = (output as iLoggerOutputs).successOutput;
-		infoOutput = (output as iLoggerOutputs).infoOutput;
-		warningOutput = (output as iLoggerOutputs).warningOutput;
-		errorOutput = (output as iLoggerOutputs).errorOutput;
-		debugOutput = (output as iLoggerOutputs).debugOutput;
+	if ((output as iLoggerOutputs).default) {
+		outputs.default = (output as iLoggerOutputs).default;
+		outputs.success = (output as iLoggerOutputs).success;
+		outputs.info = (output as iLoggerOutputs).info;
+		outputs.warning = (output as iLoggerOutputs).warning;
+		outputs.error = (output as iLoggerOutputs).error;
+		outputs.debug = (output as iLoggerOutputs).debug;
 	} else {
-		defaultOutput = output as $Loggable;
-		successOutput =
-			infoOutput =
-			warningOutput =
-			errorOutput =
-			debugOutput =
-				defaultOutput;
+		outputs.default = output as $Loggable;
+		outputs.success = outputs.default;
+		outputs.info = outputs.default;
+		outputs.warning = outputs.default;
+		outputs.error = outputs.default;
+		outputs.debug = outputs.default;
 	}
 
 	const logger: iLogger = (...args) => {
-		if (!(defaultOutput as iFile).path) {
+		if (!(outputs.default as iFile).path) {
 			return logToStream(
-				defaultOutput as NodeJS.WriteStream,
+				outputs.default as NodeJS.WriteStream,
 				options,
 				'default',
 				args,
@@ -59,7 +52,7 @@ export const createLogger = (
 			);
 		}
 		logToFile(
-			defaultOutput as iFile,
+			outputs.default as iFile,
 			options,
 			'default',
 			args,
@@ -68,7 +61,7 @@ export const createLogger = (
 	};
 
 	logger.SYMBOL_MAP = {
-		default: symbols.default || '•',
+		default: symbols.default || '••',
 		success: symbols.success || '✅',
 		info: symbols.info || '🥁',
 		warning: symbols.warning || '🚧',
@@ -76,40 +69,23 @@ export const createLogger = (
 		debug: symbols.debug || '🐞',
 	};
 
-	logger.success = genIndividualLogger(
-		successOutput || defaultOutput,
-		options,
-		'success',
-		logger.SYMBOL_MAP
-	);
+	// iterate through the outputs and create the SubLoggers
+	logger.default = undefined as any as $SubLogger;
+	logger.success = undefined as any as $SubLogger;
+	logger.info = undefined as any as $SubLogger;
+	logger.warning = undefined as any as $SubLogger;
+	logger.error = undefined as any as $SubLogger;
+	logger.debug = undefined as any as $SubLogger;
 
-	logger.info = genIndividualLogger(
-		infoOutput || defaultOutput,
-		options,
-		'info',
-		logger.SYMBOL_MAP
-	);
-
-	logger.warning = genIndividualLogger(
-		warningOutput || defaultOutput,
-		options,
-		'warning',
-		logger.SYMBOL_MAP
-	);
-
-	logger.error = genIndividualLogger(
-		errorOutput || defaultOutput,
-		options,
-		'error',
-		logger.SYMBOL_MAP
-	);
-
-	logger.debug = genIndividualLogger(
-		debugOutput || defaultOutput,
-		options,
-		'debug',
-		logger.SYMBOL_MAP
-	);
+	for (const key in outputs) {
+		// console.log(key);
+		logger[key] = genIndividualLogger(
+			outputs[key] || outputs.default,
+			options,
+			key as $LogType,
+			logger.SYMBOL_MAP
+		);
+	}
 
 	return logger;
 };

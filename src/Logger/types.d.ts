@@ -27,12 +27,16 @@ export interface iLoggerOptions {
 }
 
 export interface iLoggerOutputs {
-	defaultOutput: $Loggable;
-	successOutput?: $Loggable;
-	infoOutput?: $Loggable;
-	warningOutput?: $Loggable;
-	errorOutput?: $Loggable;
-	debugOutput?: $Loggable;
+	default: $Loggable;
+	success?: $Loggable;
+	info?: $Loggable;
+	warning?: $Loggable;
+	error?: $Loggable;
+	debug?: $Loggable;
+
+	// To prevent typescript errors
+	[key: string]: any;
+	// [key: string]: $Loggable | undefined;
 }
 
 export type $SubLogger = (...args: any[]) => void;
@@ -47,6 +51,9 @@ export interface iLogger {
 
 	// Constants
 	SYMBOL_MAP: iSymbolMap;
+
+	// To prevent typescript errors
+	[key: string]: any;
 }
 
 export interface iFile {

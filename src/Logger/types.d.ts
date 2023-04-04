@@ -43,6 +43,7 @@ export type $SubLogger = (...args: any[]) => void;
 
 export interface iLogger {
 	(...args: any[]): void;
+	default: $SubLogger;
 	success: $SubLogger;
 	info: $SubLogger;
 	warning: $SubLogger;

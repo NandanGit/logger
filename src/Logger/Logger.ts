@@ -70,6 +70,7 @@ export const createLogger = (
 	};
 
 	// iterate through the outputs and create the SubLoggers
+	logger.default = undefined as any as $SubLogger;
 	logger.success = undefined as any as $SubLogger;
 	logger.info = undefined as any as $SubLogger;
 	logger.warning = undefined as any as $SubLogger;

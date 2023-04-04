@@ -12,7 +12,7 @@ const logToFile = (
 	args: any[],
 	SYMBOL_MAP: iSymbolMap
 ) => {
-	console.log('logging to file:', file, ...args, `[${logType}]`);
+	console.log(...args, '|', file, `[${logType}]`);
 };
 
 export default logToFile;

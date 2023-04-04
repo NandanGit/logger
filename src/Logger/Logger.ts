@@ -42,22 +42,23 @@ export const createLogger = (
 	}
 
 	const logger: iLogger = (...args) => {
-		if (!(outputs.default as iFile).path) {
-			return logToStream(
-				outputs.default as NodeJS.WriteStream,
-				options,
-				'default',
-				args,
-				logger.SYMBOL_MAP
-			);
-		}
-		logToFile(
-			outputs.default as iFile,
-			options,
-			'default',
-			args,
-			logger.SYMBOL_MAP
-		);
+		const outputsArr = Array.isArray(outputs.default)
+			? outputs.default
+			: [outputs.default];
+		console.log(outputsArr.map((elem) => typeof elem));
+		// return;
+		outputsArr.forEach((output) => {
+			if (!(output as iFile).path) {
+				return logToStream(
+					output as NodeJS.WriteStream,
+					options,
+					'default',
+					args,
+					logger.SYMBOL_MAP
+				);
+			}
+			logToFile(output as iFile, options, 'default', args, logger.SYMBOL_MAP);
+		});
 	};
 
 	logger.SYMBOL_MAP = {

@@ -16,16 +16,20 @@ const genIndividualLogger = (
 	SYMBOL_MAP: iSymbolMap
 ): $SubLogger => {
 	return (...args) => {
-		if (!(output as iFile).path) {
-			return logToStream(
-				output as NodeJS.WriteStream,
-				options,
-				logType,
-				args,
-				SYMBOL_MAP
-			);
-		}
-		logToFile(output as iFile, options, logType, args, SYMBOL_MAP);
+		const outputs = Array.isArray(output) ? output : [output];
+		// console.log(outputs.map((elem) => typeof elem));
+		outputs.forEach((output) => {
+			if (!(output as iFile).path) {
+				return logToStream(
+					output as NodeJS.WriteStream,
+					options,
+					logType,
+					args,
+					SYMBOL_MAP
+				);
+			}
+			logToFile(output as iFile, options, logType, args, SYMBOL_MAP);
+		});
 	};
 };
 

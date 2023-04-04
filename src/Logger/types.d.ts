@@ -4,12 +4,15 @@ export type $Loggable =
 	| (iFile | NodeJS.WriteStream)[];
 
 export interface iLoggerOptions {
-	name: string;
+	loggerName: string;
 	dateFormat?: string;
 	processArgs?: boolean;
 	argProcessor?: (arg: any) => string;
 
 	// Formatting options
+	showName?: boolean;
+	useBracketsForName?: boolean;
+	nameFormatter?: (name: string) => string;
 	showSymbol?: boolean;
 	newLine?: boolean;
 	lineEnding?: string;

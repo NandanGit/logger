@@ -50,3 +50,8 @@ Log.debug('Some debug info'); // outputs "🐞 Some debug info"
 | `loggerName`         | `string`   | `'Logger'`       | The name of the logger. This is used to prefix the log messages.                                                                                         |
 | `useBracketsForName` | `boolean`  | `true`           | Whether to use brackets to enclose the logger name.                                                                                                      |
 | `nameFormatter`      | `function` | `name => name`   | A function that formats the logger name.                                                                                                                 |
+| `symbols`            | `object`   | `{}`             | An object that maps log types to symbols.                                                                                                                |
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details

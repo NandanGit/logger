@@ -8,10 +8,10 @@
     "test": "jest",
     "ts-node": "ts-node sandbox/Logger.sandbox.ts",
     "prettier": "prettier --write \"src/**/*.ts\"",
-    "build": "rm -rf build && tsc",
+    "build": "rm -rf dist && tsc",
     "prepack": "npmignore --auto",
-		"prepublishOnly": "npm run prettier && npm run build"
-	},
+    "prepublishOnly": "npm run prettier && npm run build"
+  },
   "keywords": [
     "logger",
     "log",

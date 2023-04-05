@@ -12,8 +12,8 @@ import {
 } from './types';
 
 export const createLogger = (
-  output: $Loggable | iLoggerOutputs,
-  options: iLoggerOptions
+  output: $Loggable | iLoggerOutputs = process.stdout,
+  options: iLoggerOptions = {}
 ): iLogger => {
   const { symbols = {} } = options;
   const outputs: iLoggerOutputs = {
@@ -45,8 +45,7 @@ export const createLogger = (
     const outputsArr = Array.isArray(outputs.default)
       ? outputs.default
       : [outputs.default];
-    console.log(outputsArr.map((elem) => typeof elem));
-    // return;
+
     outputsArr.forEach((output) => {
       if (!(output as iFile).path) {
         return logToStream(

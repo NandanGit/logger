@@ -1,6 +1,6 @@
 {
   "name": "@nandn/logger",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A module to create instances of logger which will have an output stream (console|file)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,8 +10,8 @@
     "prettier": "prettier --write \"src/**/*.ts\"",
     "build": "rm -rf build && tsc",
     "prepack": "npmignore --auto",
-		"prepublishOnly": "npm run prettier && npm run build"
-	},
+    "prepublishOnly": "npm run prettier && npm run build"
+  },
   "keywords": [
     "logger",
     "log",

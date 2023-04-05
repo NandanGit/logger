@@ -1,12 +1,16 @@
 {
   "name": "@nandn/logger",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "A module to create instances of logger which will have an output stream (console|file)",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "test": "jest",
     "ts-node": "ts-node sandbox/Logger.sandbox.ts",
-    "prettier": "prettier --write \"src/**/*.ts\""
+    "prettier": "prettier --write \"src/**/*.ts\"",
+    "build": "rm -rf dist && tsc",
+    "prepack": "npmignore --auto",
+    "prepublishOnly": "npm run prettier && npm run build"
   },
   "keywords": [
     "logger",
@@ -19,8 +23,22 @@
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.15.11",
+    "npmignore": "^0.3.0",
     "prettier": "^2.8.7",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.3"
+  },
+  "publishConfig": {
+    "ignore": [
+      "src",
+      "tests",
+      "tsconfig.json",
+      "rollup.config.js",
+      "jest.config.js",
+      "examples",
+      ".prettierrc",
+      ".vscode",
+      "!dist"
+    ]
   }
 }

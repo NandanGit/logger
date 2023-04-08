@@ -6,3 +6,12 @@ export const COLOR_MAP = {
   error: '\x1b[31m',
   debug: '\x1b[35m',
 };
+
+export const DEFAULT_SYMBOLS = {
+  default: '••',
+  success: '✅',
+  info: '🥁',
+  warning: '🚧',
+  error: '❌',
+  debug: '🐞',
+};

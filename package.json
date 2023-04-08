@@ -1,6 +1,6 @@
 {
   "name": "@nandn/logger",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A module to create instances of logger which will have an output stream (console|file)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -20,6 +20,14 @@
     "console-logger"
   ],
   "author": "Nandan Reddy <nandan.reddy1133@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NandanGit/logger.git"
+  },
+  "homepage": "https://github.com/NandanGit/logger#readme",
+  "bugs": {
+    "url": "https://github.com/NandanGit/logger/issues"
+  },
   "license": "MIT",
   "devDependencies": {
     "@types/node": "^18.15.11",

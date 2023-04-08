@@ -1,45 +1,61 @@
-export type $Loggable =
-  | NodeJS.WriteStream
-  | iFile
-  | (iFile | NodeJS.WriteStream)[];
+// export interface iOutput {
+//   type: 'FILE' | 'STD_OUT'
+// }
+export type $LogType =
+  | 'default'
+  | 'success'
+  | 'info'
+  | 'warning'
+  | 'error'
+  | 'debug';
+
+export interface iFileOutput {
+  type: 'FILE';
+  path: string;
+  options: {
+    resetOnStart?: boolean;
+  };
+}
+
+export interface iTerminalOutput {
+  type: 'STD_OUT' | 'STD_ERR';
+  target: NodeJS.WriteStream;
+}
+
+export type $Output = iFileOutput | iTerminalOutput;
+
+export type $Outputs = {
+  [key in $LogType]: $Output | $Output[];
+};
 
 export interface iLoggerOptions {
   loggerName?: string;
-  dateFormat?: string;
   processArgs?: boolean;
   argProcessor?: (arg: any) => string;
 
   // Formatting options
+  //// Name
   showName?: boolean;
   useBracketsForName?: boolean;
   nameFormatter?: (name: string) => string;
-  showSymbol?: boolean;
+
+  //// Time
+  showTime?: boolean;
+  timeFormatter?: (time: Date) => string;
+
+  //// Line ending
   newLine?: boolean;
   lineEnding?: string;
 
-  // // Symbols
+  //// Colors
+  colorize?: boolean;
+
+  //// Symbols
+  showSymbol?: boolean;
   symbols?: {
-    default?: string;
-    success?: string;
-    info?: string;
-    warning?: string;
-    error?: string;
-    debug?: string;
+    [key in $LogType]?: string;
   };
   spaceAfterSymbol?: boolean;
-}
-
-export interface iLoggerOutputs {
-  default: $Loggable;
-  success?: $Loggable;
-  info?: $Loggable;
-  warning?: $Loggable;
-  error?: $Loggable;
-  debug?: $Loggable;
-
-  // To prevent typescript errors
-  [key: string]: any;
-  // [key: string]: $Loggable | undefined;
 }
 
 export type $SubLogger = (...args: any[]) => void;
@@ -54,29 +70,12 @@ export interface iLogger {
   debug: $SubLogger;
 
   // Constants
-  SYMBOL_MAP: iSymbolMap;
+  SYMBOL_MAP: $SymbolMap;
 
   // To prevent typescript errors
   [key: string]: any;
 }
 
-export interface iFile {
-  path: string;
-}
-
-export type $LogType =
-  | 'default'
-  | 'success'
-  | 'info'
-  | 'warning'
-  | 'error'
-  | 'debug';
-
-export interface iSymbolMap {
-  default: string;
-  success: string;
-  info: string;
-  warning: string;
-  error: string;
-  debug: string;
-}
+export type $SymbolMap = {
+  [key in $LogType]: string;
+};

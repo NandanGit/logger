@@ -1,34 +1,43 @@
-import { $LogType, iLoggerOptions, iSymbolMap } from '../../Logger/types';
-import { COLOR_MAP } from '../../constants';
+import { $LogType, $SymbolMap, iLoggerOptions } from '../../types';
+import { COLOR_MAP } from '../../../constants';
 
-const logToStream = (
+export const logToStream = (
   stream: NodeJS.WriteStream,
   options: iLoggerOptions,
-  logType: $LogType,
+  logLevel: $LogType,
   args: any[],
-  SYMBOL_MAP: iSymbolMap
-) => {
+  SYMBOL_MAP: $SymbolMap
+): void => {
   const {
+    loggerName = 'Logger',
     processArgs = false,
-    argProcessor = JSON.stringify,
+    argProcessor = (val) => val.toString(), //JSON.stringify,
+    // Formatting options
+    //// Line ending
     newLine = true,
     lineEnding = '\n',
+    //// Symbols
     showSymbol = true,
     spaceAfterSymbol = true,
+    //// Name
     showName = true,
-    loggerName = 'Logger',
     useBracketsForName = true,
     nameFormatter = (name) => name,
+    //// Colors
+    colorize = true,
   } = options;
+
   const processedOutput = (
     processArgs ? args.map(argProcessor as any) : args
   ).join(' ');
 
   const symbol = showSymbol
-    ? SYMBOL_MAP[logType] + (spaceAfterSymbol ? ' ' : '')
+    ? SYMBOL_MAP[logLevel] + (spaceAfterSymbol ? ' ' : '')
     : '';
   const coloredOutput =
-    COLOR_MAP[logType] + processedOutput + COLOR_MAP.default;
+    (colorize ? COLOR_MAP[logLevel] : '') +
+    processedOutput +
+    (colorize ? COLOR_MAP.default : '');
   const endString = newLine ? lineEnding : '';
   const name = showName
     ? `${useBracketsForName ? '[' : ''}${nameFormatter(loggerName)}${
@@ -36,7 +45,4 @@ const logToStream = (
       } `
     : '';
   stream.write(name + symbol + coloredOutput + endString);
-  // console.log(Object.keys(this as any)[0]);
 };
-
-export default logToStream;

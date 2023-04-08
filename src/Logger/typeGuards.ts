@@ -1,5 +1,5 @@
 import log from '../utils/log';
-import { $Output, $Outputs } from './types';
+import { $Output, $Outputs, iTerminalOutput } from './types';
 import { isValidPath, isWriteStream } from '../utils/fs';
 
 export function isValidOutputs(arg: any): arg is $Outputs {
@@ -69,4 +69,13 @@ export function isValidOutput(value: any): value is $Output | $Output[] {
     );
   }
   return false;
+}
+
+export function isTerminalOutput(output: $Output): output is iTerminalOutput {
+  if (output.type !== 'STD_OUT' && output.type !== 'STD_ERR') return false;
+  if (!output.target) return false;
+  // if (typeof output.target === 'string' && output.target === 'console')
+  //   return true;
+  if (!isWriteStream(output.target)) return false;
+  return true;
 }

@@ -13,7 +13,7 @@ export const processOutput = (
   if (isWriteStream(output) || output === 'console') {
     return {
       type: 'STD_OUT',
-      target: output,
+      target: output === 'console' ? process.stdout : output,
     };
   }
 

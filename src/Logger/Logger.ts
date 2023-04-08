@@ -58,6 +58,8 @@ const createLoggerArgCleaner = (...args: any[]) => {
         );
       }
     }
+    default:
+      throw new Error('Invalid number of arguments, expected 0, 1 or 2');
   }
 };
 

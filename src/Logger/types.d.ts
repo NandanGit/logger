@@ -25,9 +25,7 @@ export interface iTerminalOutput {
 export type $Output = iFileOutput | iTerminalOutput;
 
 export type $Outputs = {
-  // [key in $LogType]: $Output | $Output[];
-  default: $Output | $Output[];
-  [key: string]: $Output | $Output[];
+  [key in $LogType]: $Output | $Output[];
 };
 
 export interface iLoggerOptions {

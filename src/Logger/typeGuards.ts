@@ -23,9 +23,10 @@ export function isValidOutput(value: any): value is $Output | $Output[] {
   if (Array.isArray(value)) {
     return value.every((item) => isValidOutput(item));
   }
-  if (isWriteStream(value)) {
-    return true;
-  }
+  if (value === 'console') return true;
+  if (value === process.stdin)
+    throw new Error(`Invalid output. Cannot use process.stdin as an output.`);
+  if (isWriteStream(value)) return true;
   if (typeof value === 'string') {
     if (!isValidPath(value))
       throw new Error(
@@ -37,7 +38,6 @@ export function isValidOutput(value: any): value is $Output | $Output[] {
     return false;
   }
   if (value.type === 'FILE') {
-    log(value.options);
     if (typeof value.path !== 'string') {
       return false;
     }

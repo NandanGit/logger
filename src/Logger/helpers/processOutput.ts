@@ -10,7 +10,7 @@ export const processOutput = (
     return (output as $Output[]).map(processOutput) as $Output[];
   }
 
-  if (isWriteStream(output)) {
+  if (isWriteStream(output) || output === 'console') {
     return {
       type: 'STD_OUT',
       target: output,

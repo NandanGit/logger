@@ -1,9 +1,13 @@
 import { createLogger } from './helpers/createLogger';
 import { processOutput } from './helpers/processOutput';
 import { isValidOutputs } from './typeGuards';
-import { $Output, $Outputs } from './types';
+import { $Output, $Outputs, $OutputsArg, iLoggerOptions } from './types';
 
-const createLoggerArgCleaner = (...args: any[]) => {
+function createLoggerArgCleaner(
+  OutputsOrOptions?: $OutputsArg | iLoggerOptions,
+  options?: iLoggerOptions
+) {
+  const args = arguments;
   const defaultOutput: $Output = {
     type: 'STD_OUT',
     target: process.stdout,
@@ -62,6 +66,6 @@ const createLoggerArgCleaner = (...args: any[]) => {
     default:
       throw new Error('Invalid number of arguments, expected 0, 1 or 2');
   }
-};
+}
 
 export { createLoggerArgCleaner as createLogger };

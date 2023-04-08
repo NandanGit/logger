@@ -1,91 +1,64 @@
-import genIndividualLogger from '../helpers/genIndividualLogger';
-import logToFile from '../helpers/logToOutput/logToFile';
-import logToStream from '../helpers/logToOutput/logToStream';
-import {
-  $Loggable,
-  iLoggerOptions,
-  iLoggerOutputs,
-  iLogger,
-  iFile,
-  $LogType,
-  $SubLogger,
-} from './types';
+import { createLogger } from './helpers/createLogger';
+import { processOutput } from './helpers/processOutput';
+import { isValidOutputs } from './typeGuards';
+import { $Output, $Outputs } from './types';
 
-export const createLogger = (
-  output: $Loggable | iLoggerOutputs = process.stdout,
-  options: iLoggerOptions = {}
-): iLogger => {
-  const { symbols = {} } = options;
-  const outputs: iLoggerOutputs = {
-    default: undefined as any,
-    success: undefined,
-    info: undefined,
-    warning: undefined,
-    error: undefined,
-    debug: undefined,
+const createLoggerArgCleaner = (...args: any[]) => {
+  const defaultOutput: $Output = {
+    type: 'STD_OUT',
+    target: process.stdout,
   };
-
-  if ((output as iLoggerOutputs).default) {
-    outputs.default = (output as iLoggerOutputs).default;
-    outputs.success = (output as iLoggerOutputs).success;
-    outputs.info = (output as iLoggerOutputs).info;
-    outputs.warning = (output as iLoggerOutputs).warning;
-    outputs.error = (output as iLoggerOutputs).error;
-    outputs.debug = (output as iLoggerOutputs).debug;
-  } else {
-    outputs.default = output as $Loggable;
-    outputs.success = outputs.default;
-    outputs.info = outputs.default;
-    outputs.warning = outputs.default;
-    outputs.error = outputs.default;
-    outputs.debug = outputs.default;
-  }
-
-  const logger: iLogger = (...args) => {
-    const outputsArr = Array.isArray(outputs.default)
-      ? outputs.default
-      : [outputs.default];
-
-    outputsArr.forEach((output) => {
-      if (!(output as iFile).path) {
-        return logToStream(
-          output as NodeJS.WriteStream,
-          options,
-          'default',
-          args,
-          logger.SYMBOL_MAP
+  const defaultOutputs: $Outputs = {
+    default: defaultOutput,
+    success: defaultOutput,
+    info: defaultOutput,
+    warning: defaultOutput,
+    error: defaultOutput,
+    debug: defaultOutput,
+  };
+  switch (args.length) {
+    case 0: {
+      return createLogger(defaultOutputs, {});
+    }
+    case 1: {
+      if (args[0] === 'console') {
+        return createLogger(defaultOutputs, {});
+      }
+      if (isValidOutputs(args[0])) {
+        const outputs = args[0];
+        const processedDefault = processOutput(outputs.default, defaultOutput);
+        return createLogger(
+          {
+            default: processedDefault,
+            success: processOutput(outputs.success, processedDefault),
+            info: processOutput(outputs.info, processedDefault),
+            warning: processOutput(outputs.warning, processedDefault),
+            error: processOutput(outputs.error, processedDefault),
+            debug: processOutput(outputs.debug, processedDefault),
+          },
+          {}
         );
       }
-      logToFile(output as iFile, options, 'default', args, logger.SYMBOL_MAP);
-    });
-  };
-
-  logger.SYMBOL_MAP = {
-    default: symbols.default || '••',
-    success: symbols.success || '✅',
-    info: symbols.info || '🥁',
-    warning: symbols.warning || '🚧',
-    error: symbols.error || '❌',
-    debug: symbols.debug || '🐞',
-  };
-
-  // iterate through the outputs and create the SubLoggers
-  logger.default = undefined as any as $SubLogger;
-  logger.success = undefined as any as $SubLogger;
-  logger.info = undefined as any as $SubLogger;
-  logger.warning = undefined as any as $SubLogger;
-  logger.error = undefined as any as $SubLogger;
-  logger.debug = undefined as any as $SubLogger;
-
-  for (const key in outputs) {
-    // console.log(key);
-    logger[key] = genIndividualLogger(
-      outputs[key] || outputs.default,
-      options,
-      key as $LogType,
-      logger.SYMBOL_MAP
-    );
+      return createLogger(defaultOutputs, args[0]);
+    }
+    case 2: {
+      if (isValidOutputs(args[0])) {
+        const outputs = args[0];
+        const processedDefault = processOutput(outputs.default, defaultOutput);
+        return createLogger(
+          {
+            default: processedDefault,
+            success: processOutput(outputs.success, processedDefault),
+            info: processOutput(outputs.info, processedDefault),
+            warning: processOutput(outputs.warning, processedDefault),
+            error: processOutput(outputs.error, processedDefault),
+            debug: processOutput(outputs.debug, processedDefault),
+          },
+          args[1]
+        );
+      }
+    }
   }
-
-  return logger;
 };
+
+export { createLoggerArgCleaner as createLogger };

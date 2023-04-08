@@ -27,7 +27,13 @@ export const getSubLogger = (
     // console.log(outputs.map((elem) => typeof elem));
     outputs.forEach((output) => {
       if (isTerminalOutput(output)) {
-        return logToStream(output.target, options, logLevel, args, SYMBOL_MAP);
+        return logToStream(
+          output.target,
+          { ...options, ...output.options },
+          logLevel,
+          args,
+          SYMBOL_MAP
+        );
       }
       logToFile(output, options, logLevel, args, SYMBOL_MAP);
     });

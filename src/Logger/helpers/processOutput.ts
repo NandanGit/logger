@@ -14,6 +14,7 @@ export const processOutput = (
     return {
       type: 'STD_OUT',
       target: output === 'console' ? process.stdout : output,
+      options: {},
     };
   }
 
@@ -36,5 +37,6 @@ export const processOutput = (
   return {
     type: output.type,
     target: output.target,
+    options: output.options || {},
   };
 };

@@ -7,6 +7,7 @@ const createLoggerArgCleaner = (...args: any[]) => {
   const defaultOutput: $Output = {
     type: 'STD_OUT',
     target: process.stdout,
+    options: {},
   };
   const defaultOutputs: $Outputs = {
     default: defaultOutput,

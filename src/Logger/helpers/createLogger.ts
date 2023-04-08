@@ -1,11 +1,5 @@
 import log from '../../utils/log';
-import {
-  $LogType,
-  $Outputs,
-  iLogger,
-  iLoggerOptions,
-  iTerminalOutput,
-} from '../types';
+import { $LogType, $Outputs, iLogger, iLoggerOptions } from '../types';
 import { getSubLogger } from './getSubLogger';
 
 export const createLogger = (

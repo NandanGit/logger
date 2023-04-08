@@ -18,6 +18,7 @@ export const logToStream = (
     lineEnding = '\n',
     //// Symbols
     showSymbol = true,
+    symbol,
     spaceAfterSymbol = true,
     //// Name
     showName = true,
@@ -31,8 +32,8 @@ export const logToStream = (
     processArgs ? args.map(argProcessor as any) : args
   ).join(' ');
 
-  const symbol = showSymbol
-    ? SYMBOL_MAP[logLevel] + (spaceAfterSymbol ? ' ' : '')
+  const symbolStr = showSymbol
+    ? (symbol || SYMBOL_MAP[logLevel]) + (spaceAfterSymbol ? ' ' : '')
     : '';
   const coloredOutput =
     (colorize ? COLOR_MAP[logLevel] : '') +
@@ -40,9 +41,9 @@ export const logToStream = (
     (colorize ? COLOR_MAP.default : '');
   const endString = newLine ? lineEnding : '';
   const name = showName
-    ? `${useBracketsForName ? '[' : ''}${nameFormatter(loggerName)}${
+    ? `${useBracketsForName ? '[' : ''}${nameFormatter(loggerName, options)}${
         useBracketsForName ? ']' : ''
       } `
     : '';
-  stream.write(name + symbol + coloredOutput + endString);
+  stream.write(name + symbolStr + coloredOutput + endString);
 };

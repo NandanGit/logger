@@ -9,17 +9,20 @@ export type $LogType =
   | 'error'
   | 'debug';
 
+export interface iFileOutputOptions extends iLoggerOptions {
+  resetOnStart?: boolean;
+}
 export interface iFileOutput {
   type: 'FILE';
   path: string;
-  options: {
-    resetOnStart?: boolean;
-  };
+  options: iFileOutputOptions;
 }
 
+export interface iTerminalOutputOptions extends iLoggerOptions {}
 export interface iTerminalOutput {
   type: 'STD_OUT' | 'STD_ERR';
   target: NodeJS.WriteStream;
+  options: iTerminalOutputOptions;
 }
 
 export type $Output = iFileOutput | iTerminalOutput;

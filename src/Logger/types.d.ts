@@ -9,17 +9,20 @@ export type $LogType =
   | 'error'
   | 'debug';
 
+export interface iFileOutputOptions extends iLoggerOptions {
+  resetOnStart?: boolean;
+}
 export interface iFileOutput {
   type: 'FILE';
   path: string;
-  options: {
-    resetOnStart?: boolean;
-  };
+  options: iFileOutputOptions;
 }
 
+export interface iTerminalOutputOptions extends iLoggerOptions {}
 export interface iTerminalOutput {
   type: 'STD_OUT' | 'STD_ERR';
   target: NodeJS.WriteStream;
+  options: iTerminalOutputOptions;
 }
 
 export type $Output = iFileOutput | iTerminalOutput;
@@ -37,11 +40,11 @@ export interface iLoggerOptions {
   //// Name
   showName?: boolean;
   useBracketsForName?: boolean;
-  nameFormatter?: (name: string) => string;
+  nameFormatter?: (name: string, options: iLoggerOptions) => string;
 
   //// Time
   showTime?: boolean;
-  timeFormatter?: (time: Date) => string;
+  timeFormatter?: (time: Date, options?: iLoggerOptions) => string;
 
   //// Line ending
   newLine?: boolean;
@@ -52,6 +55,7 @@ export interface iLoggerOptions {
 
   //// Symbols
   showSymbol?: boolean;
+  symbol?: string;
   symbols?: {
     [key in $LogType]?: string;
   };
@@ -79,3 +83,37 @@ export interface iLogger {
 export type $SymbolMap = {
   [key in $LogType]: string;
 };
+
+// export type $OutputsArg =
+//   | $Outputs
+//   | $Output
+//   | $Output[]
+//   | string
+//   | NodeJS.WriteStream
+//   | (string | NodeJS.WriteStream)[];
+
+interface iFileOutputArg {
+  type: 'FILE';
+  path: string;
+  options?: iFileOutputOptions;
+}
+
+interface iTerminalOutputArg {
+  type: 'STD_OUT' | 'STD_ERR';
+  target: NodeJS.WriteStream;
+  options?: iTerminalOutputOptions;
+}
+
+export type $OutputArg =
+  | 'console'
+  | string
+  | NodeJS.WriteStream
+  | (iTerminalOutputArg | iFileOutputArg)
+  | (
+      | string
+      | NodeJS.WriteStream
+      | (iTerminalOutputArg | iFileOutputArg)
+      | 'console'
+    )[];
+
+export type $OutputsArg = $OutputArg | { [key in $LogType]?: $OutputArg };

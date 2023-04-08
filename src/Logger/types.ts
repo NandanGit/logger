@@ -84,21 +84,13 @@ export type $SymbolMap = {
   [key in $LogType]: string;
 };
 
-// export type $OutputsArg =
-//   | $Outputs
-//   | $Output
-//   | $Output[]
-//   | string
-//   | NodeJS.WriteStream
-//   | (string | NodeJS.WriteStream)[];
-
-interface iFileOutputArg {
+export interface iFileOutputArg {
   type: 'FILE';
   path: string;
   options?: iFileOutputOptions;
 }
 
-interface iTerminalOutputArg {
+export interface iTerminalOutputArg {
   type: 'STD_OUT' | 'STD_ERR';
   target: NodeJS.WriteStream;
   options?: iTerminalOutputOptions;

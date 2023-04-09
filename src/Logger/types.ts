@@ -37,6 +37,8 @@ export interface iLoggerOptions {
   processArgs?: boolean;
   argProcessor?: (arg: any) => string;
 
+  showFileClearStatus?: boolean; // Informs the user if a file was cleared on start
+
   // Formatting options
   //// Name
   showName?: boolean;

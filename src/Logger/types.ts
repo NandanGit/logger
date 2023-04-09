@@ -10,11 +10,12 @@ export type $LogType =
   | 'debug';
 
 export interface iFileOutputOptions extends iLoggerOptions {
-  resetOnStart?: boolean;
+  clearOnStart?: boolean;
 }
 export interface iFileOutput {
   type: 'FILE';
   path: string;
+  target: NodeJS.WriteStream;
   options: iFileOutputOptions;
 }
 
@@ -60,6 +61,9 @@ export interface iLoggerOptions {
     [key in $LogType]?: string;
   };
   spaceAfterSymbol?: boolean;
+
+  // File options
+  clearOnStart?: boolean;
 }
 
 export type $SubLogger = (...args: any[]) => void;

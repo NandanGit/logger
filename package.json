@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
+    "test": "nodemon sandbox/Logger.test.sandbox.ts",
     "ts-node": "ts-node sandbox/Logger.sandbox.ts",
     "prettier": "prettier --write \"src/**/*.ts\"",
     "build": "rm -rf dist && tsc",

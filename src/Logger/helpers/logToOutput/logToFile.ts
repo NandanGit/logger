@@ -8,5 +8,11 @@ export const logToFile = (
   SYMBOL_MAP: $SymbolMap
 ): void => {
   return;
-  console.log(...args, '|', file, `[${logLevel}]`);
+  options = { ...options, ...file.options };
+  console.log(...args, '|', file, `[${logLevel}]`, options);
+  // console.log(
+  //   `FILE: ${file.path} ${
+  //     doesFileExist(file.path) ? 'exists' : 'does not exist'
+  //   }`
+  // );
 };

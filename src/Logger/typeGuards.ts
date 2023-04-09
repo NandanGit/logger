@@ -1,6 +1,11 @@
 import log from '../utils/log';
 import { $Output, $Outputs, iTerminalOutput } from './types';
-import { isValidPath, isWriteStream } from '../utils/fs';
+import { isValidPath } from '../utils/fs';
+import { Writable } from 'stream';
+
+export const isWriteStream = (stream: any): stream is NodeJS.WriteStream => {
+  return stream && stream instanceof Writable;
+};
 
 export function isValidOutputs(arg: any): arg is $Outputs {
   if (typeof arg !== 'object' || arg === null) {

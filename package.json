@@ -1,6 +1,6 @@
 {
   "name": "@nandn/logger",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "A module to create instances of logger which will have an output stream (console|file)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

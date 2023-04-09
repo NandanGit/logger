@@ -24,29 +24,52 @@ export const logToStream = (
     showName = true,
     useBracketsForName = true,
     nameFormatter = (name) => name,
+    spaceAfterName = true,
     //// Time
-    showTime = true,
+    showTime = false,
     timeFormatter = (time) => time.toDateString(),
+    useBracketsForTime = true,
+    spaceAfterTime = true,
     //// Colors
     colorize = true,
   } = options;
 
+  let name = '';
+  if (showName) {
+    name = nameFormatter(loggerName, options);
+    name = useBracketsForName
+      ? `[${name}]` + (spaceAfterName ? ' ' : '')
+      : name;
+  }
+
+  let time = '';
+  if (showTime) {
+    if (typeof timeFormatter === 'string') {
+      time = new Date().toLocaleString(timeFormatter);
+    } else {
+      time = showTime ? timeFormatter(new Date(), options) : '';
+    }
+    // time = time.trim();
+    time = useBracketsForTime
+      ? `[${time}]` + (spaceAfterTime ? ' ' : '')
+      : time;
+  }
+
+  let symbolStr = '';
+  if (showSymbol) {
+    symbolStr =
+      (symbol || SYMBOL_MAP[logLevel]) + (spaceAfterSymbol ? ' ' : '');
+  }
+
   const processedOutput = (
     processArgs ? args.map(argProcessor as any) : args
   ).join(' ');
-
-  const symbolStr = showSymbol
-    ? (symbol || SYMBOL_MAP[logLevel]) + (spaceAfterSymbol ? ' ' : '')
-    : '';
   const coloredOutput =
     (colorize ? COLOR_MAP[logLevel] : '') +
     processedOutput +
     (colorize ? COLOR_MAP.default : '');
+
   const endString = newLine ? lineEnding : '';
-  const name = showName
-    ? `${useBracketsForName ? '[' : ''}${nameFormatter(loggerName, options)}${
-        useBracketsForName ? ']' : ''
-      } `
-    : '';
-  stream.write(name + symbolStr + coloredOutput + endString);
+
+  stream.write(name + time + symbolStr + coloredOutput + endString);
 };

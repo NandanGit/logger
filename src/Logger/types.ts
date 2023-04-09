@@ -44,10 +44,13 @@ export interface iLoggerOptions {
   showName?: boolean;
   useBracketsForName?: boolean;
   nameFormatter?: (name: string, options: iLoggerOptions) => string;
+  spaceAfterName?: boolean;
 
   //// Time
   showTime?: boolean;
-  timeFormatter?: (time: Date, options: iLoggerOptions) => string;
+  timeFormatter?: string | ((time: Date, options: iLoggerOptions) => string);
+  useBracketsForTime?: boolean;
+  spaceAfterTime?: boolean;
 
   //// Line ending
   newLine?: boolean;

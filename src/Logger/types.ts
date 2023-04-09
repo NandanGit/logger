@@ -10,11 +10,12 @@ export type $LogType =
   | 'debug';
 
 export interface iFileOutputOptions extends iLoggerOptions {
-  resetOnStart?: boolean;
+  clearOnStart?: boolean;
 }
 export interface iFileOutput {
   type: 'FILE';
   path: string;
+  target: NodeJS.WriteStream;
   options: iFileOutputOptions;
 }
 
@@ -36,15 +37,20 @@ export interface iLoggerOptions {
   processArgs?: boolean;
   argProcessor?: (arg: any) => string;
 
+  showFileClearStatus?: boolean; // Informs the user if a file was cleared on start
+
   // Formatting options
   //// Name
   showName?: boolean;
   useBracketsForName?: boolean;
   nameFormatter?: (name: string, options: iLoggerOptions) => string;
+  spaceAfterName?: boolean;
 
   //// Time
   showTime?: boolean;
-  timeFormatter?: (time: Date, options?: iLoggerOptions) => string;
+  timeFormatter?: string | ((time: Date, options: iLoggerOptions) => string);
+  useBracketsForTime?: boolean;
+  spaceAfterTime?: boolean;
 
   //// Line ending
   newLine?: boolean;
@@ -60,6 +66,9 @@ export interface iLoggerOptions {
     [key in $LogType]?: string;
   };
   spaceAfterSymbol?: boolean;
+
+  // File options
+  clearOnStart?: boolean;
 }
 
 export type $SubLogger = (...args: any[]) => void;

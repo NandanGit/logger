@@ -2,9 +2,10 @@
   "compilerOptions": {
     "target": "ES2015",
     "module": "commonjs",
+    // "module": "esnext",
     "outDir": "./dist",
     "declaration": true,
-    "sourceMap": true,
+    // "sourceMap": true,
     "removeComments": true,
     "strict": true,
     "esModuleInterop": true,

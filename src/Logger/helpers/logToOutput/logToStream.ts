@@ -24,6 +24,9 @@ export const logToStream = (
     showName = true,
     useBracketsForName = true,
     nameFormatter = (name) => name,
+    //// Time
+    showTime = true,
+    timeFormatter = (time) => time.toDateString(),
     //// Colors
     colorize = true,
   } = options;

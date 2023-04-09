@@ -45,7 +45,7 @@ export interface iLoggerOptions {
 
   //// Time
   showTime?: boolean;
-  timeFormatter?: (time: Date, options?: iLoggerOptions) => string;
+  timeFormatter?: (time: Date, options: iLoggerOptions) => string;
 
   //// Line ending
   newLine?: boolean;

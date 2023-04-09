@@ -49,15 +49,19 @@ function createLoggerArgCleaner(
     case 2: {
       if (isValidOutputs(args[0])) {
         const outputs = args[0];
-        const processedDefault = processOutput(outputs.default, defaultOutput);
+        const processedDefault = processOutput(
+          outputs.default,
+          defaultOutput,
+          args[1]
+        );
         return createLogger(
           {
             default: processedDefault,
-            success: processOutput(outputs.success, processedDefault),
-            info: processOutput(outputs.info, processedDefault),
-            warning: processOutput(outputs.warning, processedDefault),
-            error: processOutput(outputs.error, processedDefault),
-            debug: processOutput(outputs.debug, processedDefault),
+            success: processOutput(outputs.success, processedDefault, args[1]),
+            info: processOutput(outputs.info, processedDefault, args[1]),
+            warning: processOutput(outputs.warning, processedDefault, args[1]),
+            error: processOutput(outputs.error, processedDefault, args[1]),
+            debug: processOutput(outputs.debug, processedDefault, args[1]),
           },
           args[1]
         );

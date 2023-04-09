@@ -1,11 +1,11 @@
 {
   "name": "@nandn/logger",
-  "version": "0.3.1",
-  "description": "A module to create instances of logger which will have an output stream (console|file)",
+  "version": "0.4.1",
+  "description": "A module to create instances of logger which will have an output stream (stdout|file)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "test": "jest",
+    "test": "nodemon sandbox/Logger.test.sandbox.ts",
     "ts-node": "ts-node sandbox/Logger.sandbox.ts",
     "prettier": "prettier --write \"src/**/*.ts\"",
     "build": "rm -rf dist && tsc",

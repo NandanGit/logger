@@ -1,5 +1,6 @@
 import { $LogType, $SymbolMap, iLoggerOptions } from '../../types';
 import { COLOR_MAP } from '../../../constants';
+import { formatTime } from '../../../utils/time';
 
 export const logToStream = (
   stream: NodeJS.WriteStream,
@@ -37,22 +38,20 @@ export const logToStream = (
   let name = '';
   if (showName) {
     name = nameFormatter(loggerName, options);
-    name = useBracketsForName
-      ? `[${name}]` + (spaceAfterName ? ' ' : '')
-      : name;
+    name = useBracketsForName ? `[${name}]` : name;
+    name = spaceAfterName ? name + ' ' : name;
   }
 
   let time = '';
   if (showTime) {
     if (typeof timeFormatter === 'string') {
-      time = new Date().toLocaleString(timeFormatter);
+      time = formatTime(new Date(), timeFormatter);
     } else {
       time = showTime ? timeFormatter(new Date(), options) : '';
     }
     // time = time.trim();
-    time = useBracketsForTime
-      ? `[${time}]` + (spaceAfterTime ? ' ' : '')
-      : time;
+    time = useBracketsForTime ? `[${time}]` : time;
+    time = spaceAfterTime ? time + ' ' : time;
   }
 
   let symbolStr = '';

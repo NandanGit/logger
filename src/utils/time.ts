@@ -55,9 +55,15 @@ const REGEX_MAP = {
   SSS: (time: Date) => time.getMilliseconds().toString().padStart(3, '0'),
   S: (time: Date) => time.getMilliseconds().toString(),
 };
-const DATE_TIME_REGEX = new RegExp(Object.keys(REGEX_MAP).join('|'), 'g');
+
+const REGEX_STR = `(?:\\[.*?\\])|(?:${Object.keys(REGEX_MAP).join('|')})`;
+const DATE_TIME_REGEX = new RegExp(REGEX_STR, 'g');
 export const formatTime = (time: Date, formatString: string): string => {
-  return formatString.replace(DATE_TIME_REGEX, (match) =>
-    (REGEX_MAP as any)[match](time)
-  );
+  return formatString.replace(DATE_TIME_REGEX, (match) => {
+    if (match.startsWith('[') && match.endsWith(']')) {
+      return match.slice(1, -1);
+    } else {
+      return (REGEX_MAP as any)[match](time);
+    }
+  });
 };

@@ -11,11 +11,24 @@ export type $LogType =
 
 export interface iFileOutputOptions extends iLoggerOptions {
   clearOnStart?: boolean;
+  periodic?: boolean;
+  period?: number;
+  periodStart?: Date;
+  periodEnd?: Date;
+  fileNameFormatter?: string | ((localStart: Date, localEnd: Date) => string);
+  takeFullNameFromFileNameFormatter?: boolean;
+  takeExtensionFromFileNameFormatter?: boolean;
+}
+
+export interface iFileOutputTarget {
+  stream: NodeJS.WriteStream;
+  updateStream: () => void;
+  expiresAt: Date | null;
 }
 export interface iFileOutput {
   type: 'FILE';
   path: string;
-  target: NodeJS.WriteStream;
+  target: iFileOutputTarget;
   options: iFileOutputOptions;
 }
 
@@ -93,10 +106,14 @@ export type $SymbolMap = {
   [key in $LogType]: string;
 };
 
+export interface iFileOutputOptionsArg
+  extends Omit<iFileOutputOptions, 'period'> {
+  period?: number | string;
+}
 export interface iFileOutputArg {
   type: 'FILE';
   path: string;
-  options?: iFileOutputOptions;
+  options?: iFileOutputOptionsArg;
 }
 
 export interface iTerminalOutputArg {

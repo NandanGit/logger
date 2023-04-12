@@ -15,3 +15,24 @@ export const DEFAULT_SYMBOLS = {
   error: '❌',
   debug: '🐞',
 };
+
+export const DEFAULT_PERIOD_START = new Date(-19800000);
+
+export const DEFAULT_FILE_NAME_FORMATTER = (
+  localStart: Date,
+  localEnd: Date,
+  fullName: boolean = false
+): string => {
+  const start = localStart
+    .toLocaleString('in')
+    .replace(',', '')
+    .replace(/\//g, '-');
+  if (fullName) {
+    const end = localEnd
+      .toLocaleString('in')
+      .replace(',', '')
+      .replace(/\//g, '-');
+    return `${start} - ${end}`;
+  }
+  return start;
+};

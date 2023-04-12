@@ -61,3 +61,43 @@ export const formatTime = (time: Date, formatString: string): string => {
     (REGEX_MAP as any)[match](time)
   );
 };
+
+export const parsePeriod = (period: string | number): number => {
+  if (typeof period === 'number') return period;
+  const regex =
+    /(\d+)\s*(d|day?|days?|h|hr?|hrs?|hours?|m|min?|mins?|minutes?)/gi;
+  const matches = period.match(regex);
+  if (!matches) {
+    throw new Error('Invalid period format');
+  }
+
+  const periodInMilliseconds = matches.reduce((acc, match) => {
+    const [, value = '', unit = ''] = match.match(/(\d+)\s*(\w+)/i) || [];
+    if (!value || !unit) {
+      throw new Error('Invalid period format');
+    }
+
+    switch (unit.toLowerCase()) {
+      case 'd':
+      case 'day':
+      case 'days':
+        return acc + parseInt(value, 10) * 24 * 60 * 60 * 1000; // days to milliseconds
+      case 'h':
+      case 'hr':
+      case 'hrs':
+      case 'hour':
+      case 'hours':
+        return acc + parseInt(value, 10) * 60 * 60 * 1000; // hours to milliseconds
+      case 'm':
+      case 'min':
+      case 'mins':
+      case 'minute':
+      case 'minutes':
+        return acc + parseInt(value, 10) * 60 * 1000; // minutes to milliseconds
+      default:
+        throw new Error(`Unknown unit "${unit}" in period: ${period}`);
+    }
+  }, 0);
+
+  return periodInMilliseconds;
+};

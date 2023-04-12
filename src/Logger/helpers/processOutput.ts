@@ -1,6 +1,7 @@
 import { $Output, iLoggerOptions } from '../types';
 import { isWriteStream } from '../typeGuards';
 import { getStreamFromFilePath } from './getStreamFromFilePath';
+import { processFileOptions } from './processOptions';
 
 export const processOutput = (
   output: any,
@@ -24,23 +25,25 @@ export const processOutput = (
   }
 
   if (typeof output === 'string') {
+    const processedOptions = processFileOptions(options);
     return {
       type: 'FILE',
       path: output,
-      target: getStreamFromFilePath(output, options),
+      target: getStreamFromFilePath(output, processedOptions),
       options: {},
     };
   }
 
   if (output.type === 'FILE') {
+    const processedOptions = processFileOptions({
+      ...options,
+      ...(output.options || {}),
+    });
     return {
       type: 'FILE',
       path: output.path,
-      target: getStreamFromFilePath(output.path, {
-        ...options,
-        ...(output.options || {}),
-      }),
-      options: output.options || {},
+      target: getStreamFromFilePath(output.path, processedOptions),
+      options: processFileOptions(output.options || {}),
     };
   }
 

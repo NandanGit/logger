@@ -10,10 +10,6 @@ You can install `Logger` via NPM by running the following command
 npm i @nandn/logger --save-dev
 ```
 
-## Usage# Logger
-
-`Logger` is a Node.js package for logging information with various formatting options. The package provides a simple interface to create a logger with different log levels like `debug`, `info`, `success`, `warning`, and `error`. Each level has a specific color and symbol to visually differentiate them. The logger can write to files, streams, or an array of files and streams.
-
 ## Installation
 
 You can install `Logger` via NPM by running the following command

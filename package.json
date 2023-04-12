@@ -40,6 +40,7 @@
     "ignore": [
       "src",
       "tests",
+      "docs",
       "tsconfig.json",
       "rollup.config.js",
       "jest.config.js",

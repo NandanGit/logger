@@ -10,14 +10,6 @@ You can install `Logger` via NPM by running the following command
 npm i @nandn/logger --save-dev
 ```
 
-## Installation
-
-You can install `Logger` via NPM by running the following command
-
-```bash
-npm i @nandn/logger --save-dev
-```
-
 ## Usage
 
 The `Logger` package exports a `createLogger` function that you can use to create a new logger instance. The `createLogger` function takes two optional arguments:

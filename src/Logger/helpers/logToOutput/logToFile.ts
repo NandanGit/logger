@@ -1,3 +1,4 @@
+import { formatTime } from '../../../utils/time';
 import { $LogType, $SymbolMap, iFileOutput, iLoggerOptions } from '../../types';
 import { logToStream } from './logToStream';
 
@@ -31,19 +32,23 @@ export const logToFile = (
     colorize: false, // Colors in files? Come on!
   };
 
-  logToStream(
-    file.target,
-    { ...options, ...softOverrides, ...file.options, ...hardOverrides },
-    logLevel,
-    args,
-    SYMBOL_MAP
-  );
-  return;
-  options = { ...options, ...file.options };
-  console.log(...args, '|', file, `[${logLevel}]`, options);
-  // console.log(
-  //   `FILE: ${file.path} ${
-  //     doesFileExist(file.path) ? 'exists' : 'does not exist'
-  //   }`
-  // );
+  const combinedOptions = {
+    ...options,
+    ...softOverrides,
+    ...file.options,
+    ...hardOverrides,
+  };
+
+  // console.log('combinedOptions', combinedOptions);
+  if (combinedOptions.period) {
+    // Check if file has expired
+    if (
+      file.target.expiresAt &&
+      file.target.expiresAt.getTime() < new Date().getTime()
+    ) {
+      file.target.updateStream();
+    }
+  }
+
+  logToStream(file.target.stream, combinedOptions, logLevel, args, SYMBOL_MAP);
 };

@@ -9,7 +9,7 @@ export type $LogType =
   | 'error'
   | 'debug';
 
-export interface iFileOutputOptions extends iLoggerOptions {
+export interface iFileOptions extends iLoggerOptionsBase {
   clearOnStart?: boolean;
   periodic?: boolean;
   period?: number;
@@ -29,15 +29,17 @@ export interface iFileOutput {
   type: 'FILE';
   path: string;
   target: iFileOutputTarget;
-  options: iFileOutputOptions;
+  options: iFileOptions;
 }
 
-export interface iTerminalOutputOptions extends iLoggerOptions {}
+export interface iTerminalOptions extends iLoggerOptionsBase {}
 export interface iTerminalOutput {
   type: 'STD_OUT' | 'STD_ERR';
   target: NodeJS.WriteStream;
-  options: iTerminalOutputOptions;
+  options: iTerminalOptions;
 }
+
+export interface iLoggerOptions extends iTerminalOptions, iFileOptions {}
 
 export type $Output = iFileOutput | iTerminalOutput;
 
@@ -45,7 +47,7 @@ export type $Outputs = {
   [key in $LogType]: $Output | $Output[];
 };
 
-export interface iLoggerOptions {
+export interface iLoggerOptionsBase {
   loggerName?: string;
   processArgs?: boolean;
   argProcessor?: (arg: any) => string;
@@ -106,8 +108,7 @@ export type $SymbolMap = {
   [key in $LogType]: string;
 };
 
-export interface iFileOutputOptionsArg
-  extends Omit<iFileOutputOptions, 'period'> {
+export interface iFileOutputOptionsArg extends Omit<iFileOptions, 'period'> {
   period?: number | string;
 }
 export interface iFileOutputArg {
@@ -119,7 +120,7 @@ export interface iFileOutputArg {
 export interface iTerminalOutputArg {
   type: 'STD_OUT' | 'STD_ERR';
   target: NodeJS.WriteStream;
-  options?: iTerminalOutputOptions;
+  options?: iTerminalOptions;
 }
 
 export type $OutputArg =

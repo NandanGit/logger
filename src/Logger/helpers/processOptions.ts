@@ -1,18 +1,14 @@
 import { parsePeriod } from '../../utils/time';
-import {
-  iFileOutputOptions,
-  iFileOutputOptionsArg,
-  iLoggerOptions,
-} from '../types';
+import { iFileOptions, iFileOutputOptionsArg, iLoggerOptions } from '../types';
 
 export const processFileOptions = (
   options: iFileOutputOptionsArg | iLoggerOptions = {}
-): iFileOutputOptions => {
+): iFileOptions => {
   let { period } = options as iFileOutputOptionsArg;
   if (period) {
     period = parsePeriod(period);
   }
-  const result: iFileOutputOptions = {
+  const result: iFileOptions = {
     ...options,
     period: period as number | undefined,
   };

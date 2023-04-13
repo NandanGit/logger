@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { iFileOutputOptions, iFileOutputTarget } from '../types';
+import { iFileOptions, iFileOutputTarget } from '../types';
 import { resolvePeriod } from './resolvePeriod';
 import {
   DEFAULT_FILE_NAME_FORMATTER,
@@ -15,7 +15,7 @@ export interface iCreateStreamOutput {
 
 const createStream = (
   filePath: string,
-  options: iFileOutputOptions,
+  options: iFileOptions,
   isPeriodic: boolean
 ): iCreateStreamOutput => {
   // Declarations
@@ -79,7 +79,7 @@ const createStream = (
 
 export const getStreamFromFilePath = (
   filePath: string,
-  options: iFileOutputOptions = {}
+  options: iFileOptions = {}
 ): iFileOutputTarget => {
   // console.log('getStreamFromFilePath', filePath, options);
   // Check if the file output should be periodic

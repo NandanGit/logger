@@ -32,7 +32,11 @@ export interface iFileOutput {
   options: iFileOptions;
 }
 
-export interface iTerminalOptions extends iLoggerOptionsBase {}
+export interface iTerminalOptions extends iLoggerOptionsBase {
+  // Colors
+  colorize?: boolean;
+  reduceColors?: boolean;
+}
 export interface iTerminalOutput {
   type: 'STD_OUT' | 'STD_ERR';
   target: NodeJS.WriteStream;
@@ -70,9 +74,6 @@ export interface iLoggerOptionsBase {
   //// Line ending
   newLine?: boolean;
   lineEnding?: string;
-
-  //// Colors
-  colorize?: boolean;
 
   //// Symbols
   showSymbol?: boolean;

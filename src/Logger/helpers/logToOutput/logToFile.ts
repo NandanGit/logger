@@ -30,6 +30,7 @@ export const logToFile = (
     // Cause somethings just shouldn't be logged to a file
     // This options are not overridable by user
     colorize: false, // Colors in files? Come on!
+    reduceColors: false, // Colors in files? Come on!
   };
 
   const combinedOptions = {

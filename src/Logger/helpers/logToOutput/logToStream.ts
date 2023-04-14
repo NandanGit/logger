@@ -1,6 +1,7 @@
 import { $LogType, $SymbolMap, iLoggerOptions } from '../../types';
 import { COLOR_MAP } from '../../../constants';
 import { formatTime } from '../../../utils/time';
+import { colorize, reduceColorsInString } from '../../../utils/string';
 
 export const logToStream = (
   stream: NodeJS.WriteStream,
@@ -32,8 +33,19 @@ export const logToStream = (
     useBracketsForTime = true,
     spaceAfterTime = true,
     //// Colors
-    colorize = true,
+    colorize: colorizeText = true,
+    reduceColors = true,
   } = options;
+
+  // Parse colors if reduceColors is true
+  if (reduceColors) {
+    args = args.map((arg) => {
+      if (typeof arg === 'string') {
+        return reduceColorsInString(arg, logLevel);
+      }
+      return arg;
+    });
+  }
 
   let name = '';
   if (showName) {
@@ -60,13 +72,14 @@ export const logToStream = (
       (symbol || SYMBOL_MAP[logLevel]) + (spaceAfterSymbol ? ' ' : '');
   }
 
-  const processedOutput = (
-    processArgs ? args.map(argProcessor as any) : args
-  ).join(' ');
-  const coloredOutput =
-    (colorize ? COLOR_MAP[logLevel] : '') +
-    processedOutput +
-    (colorize ? COLOR_MAP.default : '');
+  const processedOutput = (processArgs ? args.map(argProcessor) : args).join(
+    ' '
+  );
+
+  let coloredOutput = processedOutput;
+  if (colorizeText) {
+    coloredOutput = colorize(processedOutput, logLevel);
+  }
 
   const endString = newLine ? lineEnding : '';
 
